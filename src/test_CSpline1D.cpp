@@ -3,13 +3,20 @@
 #include<string>
 #include"InterCSpline1D.h"
 
+/* number of bins in x
+ * where the function is interpolated */
 int nbin_x = 8;
+/* range in x
+ * xmin < x < xmax */
 double xmin = 0.;
 double xmax = 2. * M_PI;
 
+/* number of points in x
+ * at which the interpolated function is evaluated */
 double n_pt_x = 128;
 
 int main(int argc, char *argv[]) {
+    // x bin
     double *tab_x = new double[nbin_x + 1];
     for (int ix = 0; ix <= nbin_x; ix++) {
         tab_x[ix] = xmin +
@@ -17,15 +24,18 @@ int main(int argc, char *argv[]) {
                             static_cast<double>(nbin_x);
     }
 
+    // tabulated function (cosine)
     double *tab_f = new double [nbin_x + 1];
     for (int ix = 0; ix <= nbin_x; ix++) {
             tab_f[ix] = cos(tab_x[ix]);
     }
 
+    // boundary condition for the first derivative
     double *tab_bc_df_dx = new double[2];
     tab_bc_df_dx[0] = 0.;
     tab_bc_df_dx[1] = 0.;
 
+    // initialize the interpolator
     InterCSpline1D csp_test;
     csp_test.init(nbin_x, tab_x,
                   tab_f,
@@ -46,6 +56,7 @@ int main(int argc, char *argv[]) {
         ptr_fout = stderr;
     }
 
+    // evaluate the interpolated function
     for (int ix = 0; ix <= n_pt_x; ix++) {
         double x_now = xmin +
             (xmax - xmin) * static_cast<double>(ix) /
