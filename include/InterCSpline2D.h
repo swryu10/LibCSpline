@@ -48,14 +48,12 @@ class InterCSpline2D {
         delete [] tab_x_;
         delete [] tab_y_;
 
-        for (int ix = 0; ix <= nbin_x_; ix++) {
-            delete [] tab_f_[ix];
-            delete [] tab_d2f_dx_dx_[ix];
-            delete [] tab_d2f_dy_dy_[ix];
-        }
-        delete [] tab_f_;
-        delete [] tab_d2f_dx_dx_;
-        delete [] tab_d2f_dy_dy_;
+        del_array_func(nbin_x_, nbin_y_,
+                       tab_f_);
+        del_array_func(nbin_x_, nbin_y_,
+                       tab_d2f_dx_dx_);
+        del_array_func(nbin_x_, nbin_y_,
+                       tab_d2f_dy_dy_);
 
         initialized_ = false;
 

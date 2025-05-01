@@ -30,27 +30,19 @@ void InterCSpline2D::init(int nbin_in_x,
         tab_y_[iy] = y_in[iy];
     }
 
-    tab_f_ = new double *[nbin_x_ + 1];
-    tab_d2f_dx_dx_ = new double *[nbin_x_ + 1];
-    tab_d2f_dy_dy_ = new double *[nbin_x_ + 1];
-
+    tab_f_ = new_array_func(nbin_x_, nbin_y_);
     for (int ix = 0; ix <= nbin_x_; ix++) {
-        tab_f_[ix] = new double[nbin_y_ + 1];
-        tab_d2f_dx_dx_[ix] = new double[nbin_y_ + 1];
-        tab_d2f_dy_dy_[ix] = new double[nbin_y_ + 1];
-
         for (int iy = 0; iy <= nbin_y_; iy++) {
             tab_f_[ix][iy] = f_in[ix][iy];
-
-            tab_d2f_dx_dx_[ix][iy] = 0.;
-            tab_d2f_dy_dy_[ix][iy] = 0.;
         }
     }
 
-    double **tab_f_tr = new double *[nbin_y_ + 1];
-    for (int iy = 0; iy <= nbin_y_; iy++) {
-        tab_f_tr[iy] = new double[nbin_x_ + 1];
+    tab_d2f_dx_dx_ = new_array_func(nbin_x_, nbin_y_);
+    tab_d2f_dy_dy_ = new_array_func(nbin_x_, nbin_y_);
 
+    double **tab_f_tr =
+        new_array_func(nbin_y_, nbin_x_);
+    for (int iy = 0; iy <= nbin_y_; iy++) {
         for (int ix = 0; ix <= nbin_x_; ix++) {
             tab_f_tr[iy][ix] = tab_f_[ix][iy];
         }
@@ -215,10 +207,7 @@ void InterCSpline2D::init(int nbin_in_x,
     delete [] list_csp_y_f;
     delete [] list_csp_x_f;
 
-    for (int iy = 0; iy <= nbin_y_; iy++) {
-        delete [] tab_f_tr[iy];
-    }
-    delete [] tab_f_tr;
+    del_array_func(nbin_y_, nbin_x_, tab_f_tr);
 
     initialized_ = true;
 
