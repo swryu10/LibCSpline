@@ -10,7 +10,7 @@ class InterCSpline1D {
   private :
 
     /* number of bins and tabulated functions
-     * For ix = 0 ... nbin_
+     * For ix = 0 ... nbin_,
      *   tab_x_[ix] = x
      *   tab_f_[ix] = f at x
      *   tab_d2f_dx_[ix] = d^{2}f / dx^{2} at x
@@ -60,7 +60,7 @@ class InterCSpline1D {
      * x_in : array for x
      * f_in : array for function f
      * For ix = 0 ... nbin_in
-     *   bin_ = nbin_in
+     *   nbin_ = nbin_in,
      *   tab_x_[ix] = x_in[ix]
      *   tab_f_[ix] = f_in[ix]
      * Note that the array will be sorted
@@ -68,11 +68,11 @@ class InterCSpline1D {
      *   tab_x_[ix] < tab_x_[ix + 1]
      *
      * bc_df_dx : boundary condition for the first derivative
-     *   bc_df_dx[0] = df/dx at x = xmin_ (= tab_x_[0])
-     *   bc_df_dx[1] = df/dx at x = xmax_ (= tab_x_[nbin_in])
+     *   bc_df_dx[0] = df / dx at x = xmin_ (= tab_x_[0])
+     *   bc_df_dx[1] = df / dx at x = xmax_ (= tab_x_[nbin_])
      * If a NULL pointer is given for the value of bc_df_dx,
      * it performs a natural cubic spline.
-     *   d^{2}f/dx^{2} = 0 at x = xmin_ and x = xmax_ */
+     *   d^{2}f / dx^{2} = 0 at x = xmin_ and x = xmax_ */
     void init(int nbin_in,
               double *x_in,
               double *f_in,

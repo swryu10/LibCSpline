@@ -6,22 +6,34 @@
 #endif
 #include"InterCSpline2D.h"
 
+/* number of bins in x
+ * where the function is interpolated */
 int nbin_x = 16;
+/* range in x
+ * xmin < x < xmax */
 double xmin = 0.;
 double xmax = 1.;
 
+/* number of bins in y
+ * where the function is interpolated */
 int nbin_y = 16;
+/* range in y
+ * ymin < y < ymax */
 double ymin = 0.;
 double ymax = 1.;
 
+/* number of points in x and y
+ * at which the interpolated function is evaluated */
 int n_pt_x = 128;
 int n_pt_y = 128;
 
+// function to be interpolated
 double func_test(double x, double y,
                  double *df_dx = NULL,
                  double *df_dy = NULL);
 
 int main(int argc, char *argv[]) {
+    // x bin
     double *tab_x = new double[nbin_x + 1];
     for (int ix = 0; ix <= nbin_x; ix++) {
         tab_x[ix] = xmin +
@@ -29,6 +41,7 @@ int main(int argc, char *argv[]) {
                             static_cast<double>(nbin_x);
     }
 
+    // y bin
     double *tab_y = new double[nbin_y + 1];
     for (int iy = 0; iy <= nbin_y; iy++) {
         tab_y[iy] = ymin +
@@ -36,8 +49,10 @@ int main(int argc, char *argv[]) {
                             static_cast<double>(nbin_y);
     }
 
+    // tabulated function
     double **tab_f =
         InterCSpline2D::new_array_func(nbin_x, nbin_y);
+    // boundary condition for the first derivative
     double **tab_bc_df_dx =
         InterCSpline2D::new_array_bc_df_dx(nbin_y);
     double **tab_bc_df_dy =
@@ -70,6 +85,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    // initialize the interpolator
     InterCSpline2D csp_test;
     csp_test.init(nbin_x, nbin_y,
                   tab_x, tab_y,
@@ -88,12 +104,24 @@ int main(int argc, char *argv[]) {
     delete [] tab_y;
 
     double *pt_x = new double[n_pt_x + 1];
+    for (int ix = 0; ix <= n_pt_x; ix++) {
+        pt_x[ix] = xmin +
+            (xmax - xmin) * static_cast<double>(ix) /
+                            static_cast<double>(n_pt_x);
+    }
     double *pt_y = new double[n_pt_y + 1];
-    double *pt_f_fin =
-        new double[(n_pt_x + 1) * (n_pt_y + 1)];
-    double *pt_f_lin =
-        new double[(n_pt_x + 1) * (n_pt_y + 1)];
+    for (int iy = 0; iy <= n_pt_y; iy++) {
+        pt_y[iy] = ymin +
+            (ymax - ymin) * static_cast<double>(iy) /
+                            static_cast<double>(n_pt_y);
+    }
 
+    double **pt_f_fin =
+        InterCSpline2D::new_array_func(n_pt_x, n_pt_y);
+    double **pt_f_lin =
+        InterCSpline2D::new_array_func(n_pt_x, n_pt_y);
+
+    // evaluate the interpolated function
     #ifdef _OPENMP
     #pragma omp parallel
     {  // parallel code begins
@@ -110,18 +138,10 @@ int main(int argc, char *argv[]) {
             }
             #endif
 
-            pt_x[ix] = xmin +
-                (xmax - xmin) * static_cast<double>(ix) /
-                                static_cast<double>(n_pt_x);
             for (int iy = 0; iy <= n_pt_y; iy++) {
-                pt_y[iy] = ymin +
-                    (ymax - ymin) * static_cast<double>(iy) /
-                                    static_cast<double>(n_pt_y);
-
-                int k = (n_pt_y + 1) * ix + iy;
-                pt_f_fin[k] =
+                pt_f_fin[ix][iy] =
                     csp_test.get_func(pt_x[ix], pt_y[iy]);
-                pt_f_lin[k] =
+                pt_f_lin[ix][iy] =
                     csp_test.get_func_lin(pt_x[ix], pt_y[iy]);
             }
         }
@@ -145,9 +165,8 @@ int main(int argc, char *argv[]) {
         for (int iy = 0; iy <= n_pt_y; iy++) {
             double f_ini = func_test(pt_x[ix], pt_y[iy]);
 
-            int k = (n_pt_y + 1) * ix + iy;
-            double f_fin = pt_f_fin[k];
-            double f_lin = pt_f_lin[k];
+            double f_fin = pt_f_fin[ix][iy];
+            double f_lin = pt_f_lin[ix][iy];
 
             fprintf(ptr_fout, "    %e    %e    %e",
                     pt_x[ix], pt_y[iy], f_ini);
@@ -165,8 +184,11 @@ int main(int argc, char *argv[]) {
 
     delete [] pt_x;
     delete [] pt_y;
-    delete [] pt_f_fin;
-    delete [] pt_f_lin;
+
+    InterCSpline2D::del_array_func(n_pt_x, n_pt_y,
+                                   pt_f_fin);
+    InterCSpline2D::del_array_func(n_pt_x, n_pt_y,
+                                   pt_f_lin);
 
     return 0;
 }
