@@ -55,22 +55,14 @@ class InterCSpline3D {
         delete [] tab_x_;
         delete [] tab_y_;
 
-        for (int iz = 0; iz <= nbin_z_; iz++) {
-            for (int ix = 0; ix <= nbin_x_; ix++) {
-                delete [] tab_f_[iz][ix];
-                delete [] tab_d2f_dz_dz_[iz][ix];
-                delete [] tab_d2f_dx_dx_[iz][ix];
-                delete [] tab_d2f_dy_dy_[iz][ix];
-            }
-            delete [] tab_f_[iz];
-            delete [] tab_d2f_dz_dz_[iz];
-            delete [] tab_d2f_dx_dx_[iz];
-            delete [] tab_d2f_dy_dy_[iz];
-        }
-        delete [] tab_f_;
-        delete [] tab_d2f_dz_dz_;
-        delete [] tab_d2f_dx_dx_;
-        delete [] tab_d2f_dy_dy_;
+        del_array_func(nbin_z_, nbin_x_, nbin_y_,
+                       tab_f_);
+        del_array_func(nbin_z_, nbin_x_, nbin_y_,
+                       tab_d2f_dz_dz_);
+        del_array_func(nbin_z_, nbin_x_, nbin_y_,
+                       tab_d2f_dx_dx_);
+        del_array_func(nbin_z_, nbin_x_, nbin_y_,
+                       tab_d2f_dy_dy_);
 
         initialized_ = false;
 

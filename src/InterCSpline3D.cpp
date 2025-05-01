@@ -41,28 +41,14 @@ void InterCSpline3D::init(int nbin_in_z,
         tab_y_[iy] = y_in[iy];
     }
 
-    tab_f_ = new double **[nbin_z_ + 1];
-    tab_d2f_dz_dz_ = new double **[nbin_z_ + 1];
-    tab_d2f_dx_dx_ = new double **[nbin_z_ + 1];
-    tab_d2f_dy_dy_ = new double **[nbin_z_ + 1];
+    tab_f_ = new_array_func(nbin_z_, nbin_x_, nbin_y_);
+    tab_d2f_dz_dz_ = new_array_func(nbin_z_, nbin_x_, nbin_y_);
+    tab_d2f_dx_dx_ = new_array_func(nbin_z_, nbin_x_, nbin_y_);
+    tab_d2f_dy_dy_ = new_array_func(nbin_z_, nbin_x_, nbin_y_);
     for (int iz = 0; iz <= nbin_z_; iz++) {
-        tab_f_[iz] = new double *[nbin_x_ + 1];
-        tab_d2f_dz_dz_[iz] = new double *[nbin_x_ + 1];
-        tab_d2f_dx_dx_[iz] = new double *[nbin_x_ + 1];
-        tab_d2f_dy_dy_[iz] = new double *[nbin_x_ + 1];
-
         for (int ix = 0; ix <= nbin_x_; ix++) {
-            tab_f_[iz][ix] = new double[nbin_y_ + 1];
-            tab_d2f_dz_dz_[iz][ix] = new double[nbin_y_ + 1];
-            tab_d2f_dx_dx_[iz][ix] = new double[nbin_y_ + 1];
-            tab_d2f_dy_dy_[iz][ix] = new double[nbin_y_ + 1];
-
             for (int iy = 0; iy <= nbin_y_; iy++) {
                 tab_f_[iz][ix][iy] = f_in[iz][ix][iy];
-
-                tab_d2f_dz_dz_[iz][ix][iy] = 0.;
-                tab_d2f_dx_dx_[iz][ix][iy] = 0.;
-                tab_d2f_dy_dy_[iz][ix][iy] = 0.;
             }
         }
     }
