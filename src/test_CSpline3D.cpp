@@ -7,22 +7,38 @@
 #include"InterCSpline2D.h"
 #include"InterCSpline3D.h"
 
+/* number of bins in z
+ * where the function is interpolated */
 int nbin_z = 16;
+/* range in z
+ * zmin < x < zmax */
 double zmin = 0.;
 double zmax = 1.;
 
+/* number of bins in x
+ * where the function is interpolated */
 int nbin_x = 16;
+/* range in x
+ * xmin < x < xmax */
 double xmin = 0.;
 double xmax = 1.;
 
+/* number of bins in y
+ * where the function is interpolated */
 int nbin_y = 16;
+/* range in y
+ * ymin < y < ymax */
 double ymin = 0.;
 double ymax = 1.;
 
+/* number of points in z, x and y
+ * at which the interpolated function is evaluated */
 int n_pt_z = 64;
 int n_pt_x = 64;
 int n_pt_y = 64;
 
+/* values of z, x and y
+ * at which 2D outputs are produced */
 double z_mid = 0.5;
 double x_mid = 0.5;
 double y_mid = 0.25;
@@ -33,6 +49,7 @@ double func_test(double z, double x, double y,
                  double *df_dy = NULL);
 
 int main(int argc, char *argv[]) {
+    // z bin
     double *tab_z = new double[nbin_z + 1];
     for (int iz = 0; iz <= nbin_z; iz++) {
         tab_z[iz] = zmin +
@@ -40,6 +57,7 @@ int main(int argc, char *argv[]) {
                             static_cast<double>(nbin_z);
     }
 
+    // x bin
     double *tab_x = new double[nbin_x + 1];
     for (int ix = 0; ix <= nbin_x; ix++) {
         tab_x[ix] = xmin +
@@ -47,6 +65,7 @@ int main(int argc, char *argv[]) {
                             static_cast<double>(nbin_x);
     }
 
+    // y bin
     double *tab_y = new double[nbin_y + 1];
     for (int iy = 0; iy <= nbin_y; iy++) {
         tab_y[iy] = ymin +
@@ -54,8 +73,10 @@ int main(int argc, char *argv[]) {
                             static_cast<double>(nbin_y);
     }
 
+    // tabulated function
     double ***tab_f =
         InterCSpline3D::new_array_func(nbin_z, nbin_x, nbin_y);
+    // boundary condition for the first derivative
     double ***tab_bc_df_dz =
         InterCSpline3D::new_array_bc_df_dz(nbin_x, nbin_y);
     double ***tab_bc_df_dx =
@@ -102,6 +123,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    // initialize the interpolator
     InterCSpline3D csp_test;
     csp_test.init(nbin_z, nbin_x, nbin_y,
                   tab_z, tab_x, tab_y,
@@ -155,6 +177,7 @@ int main(int argc, char *argv[]) {
     double **pt_f_zx_lin =
         InterCSpline2D::new_array_func(n_pt_z, n_pt_x);
 
+    // evaluate the interpolated function
     #ifdef _OPENMP
     #pragma omp parallel
     {  // parallel code begins
