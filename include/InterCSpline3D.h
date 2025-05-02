@@ -4,7 +4,7 @@
 #include<stdlib.h>
 
 /* implementation of
- * natural cubic spline interpolation
+ * cubic spline interpolation
  * for functions in 3-dimension */
 class InterCSpline3D {
   private :
@@ -58,12 +58,14 @@ class InterCSpline3D {
 
   public :
 
+    // constructor
     InterCSpline3D() {
         initialized_ = false;
 
         return;
     }
 
+    // destructor
     ~InterCSpline3D() {
         reset();
 
@@ -204,6 +206,10 @@ class InterCSpline3D {
                         double x_in,
                         double y_in);
 
+    /* helper functions to find iz, ix, iy
+     * such that tab_z_[iz] <= z_in < tab_z_[iz + 1]
+     *           tab_x_[ix] <= x_in < tab_x_[ix + 1] 
+     *           tab_y_[iy] <= y_in < tab_y_[iy + 1] */
     int get_index_z(double z_in);
     int get_index_x(double x_in);
     int get_index_y(double y_in);

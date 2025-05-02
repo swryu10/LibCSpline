@@ -4,7 +4,7 @@
 #include<stdlib.h>
 
 /* implementation of
- * natural cubic spline interpolation
+ * cubic spline interpolation
  * for functions in 2-dimension */
 class InterCSpline2D {
   private :
@@ -45,12 +45,14 @@ class InterCSpline2D {
 
   public :
 
+    // constructor
     InterCSpline2D() {
         initialized_ = false;
 
         return;
     }
 
+    // destructor
     ~InterCSpline2D() {
         reset();
 
@@ -152,6 +154,9 @@ class InterCSpline2D {
     double get_func_lin(double x_in,
                         double y_in);
 
+    /* helper functions to find ix, iy
+     * such that tab_x_[ix] <= x_in < tab_x_[ix + 1] 
+     *           tab_y_[iy] <= y_in < tab_y_[iy + 1] */
     int get_index_x(double x_in);
     int get_index_y(double y_in);
 

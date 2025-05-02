@@ -4,7 +4,7 @@
 #include<stdlib.h>
 
 /* implementation of
- * natural cubic spline interpolation
+ * cubic spline interpolation
  * for functions in 1-dimension */
 class InterCSpline1D {
   private :
@@ -27,12 +27,14 @@ class InterCSpline1D {
 
   public :
 
+    // constructor
     InterCSpline1D() {
         initialized_ = false;
 
         return;
     }
 
+    // destructor
     ~InterCSpline1D() {
         reset();
 
@@ -96,6 +98,8 @@ class InterCSpline1D {
      * given by a linear interpolation */
     double get_func_lin(double x_in);
 
+    /* helper functions to find ix
+     * such that tab_x_[ix] <= x_in < tab_x_[ix + 1] */
     int get_index_x(double x_in);
 };
 
