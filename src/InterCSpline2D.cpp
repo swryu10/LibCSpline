@@ -31,46 +31,37 @@ void InterCSpline2D::init(int nbin_in_x,
     }
 
     tab_f_ = new_array_func(nbin_x_, nbin_y_);
-    for (int ix = 0; ix <= nbin_x_; ix++) {
-        for (int iy = 0; iy <= nbin_y_; iy++) {
-            tab_f_[ix][iy] = f_in[ix][iy];
-        }
-    }
-
     tab_d2f_dx_dx_ = new_array_func(nbin_x_, nbin_y_);
     tab_d2f_dy_dy_ = new_array_func(nbin_x_, nbin_y_);
-
     double **tab_f_tr =
         new_array_func(nbin_y_, nbin_x_);
+
+    int *index_sort_x = new int[nbin_x_ + 1];
+    for (int ix = 0; ix <= nbin_x_; ix++) {
+        index_sort_x[ix] = ix;
+    }
+
+    int *index_sort_y = new int[nbin_y_ + 1];
     for (int iy = 0; iy <= nbin_y_; iy++) {
-        for (int ix = 0; ix <= nbin_x_; ix++) {
-            tab_f_tr[iy][ix] = tab_f_[ix][iy];
-        }
+        index_sort_y[iy] = iy;
     }
 
     bool sorted_x = false;
     while (!sorted_x) {
-        double *f_l = new double[nbin_y_ + 1];
-        double *f_u = new double[nbin_y_ + 1];
-
         bool swapped = false;
         for (int ix = 0; ix < nbin_x_; ix++) {
             if (tab_x_[ix] > tab_x_[ix + 1]) {
                 double x_l = tab_x_[ix + 1];
                 double x_u = tab_x_[ix];
 
-                for (int iy = 0; iy <= nbin_y_; iy++) {
-                    f_l[iy] = tab_f_[ix + 1][iy];
-                    f_u[iy] = tab_f_[ix][iy];
-                }
-
                 tab_x_[ix] = x_l;
                 tab_x_[ix + 1] = x_u;
 
-                for (int iy = 0; iy <= nbin_y_; iy++) {
-                    tab_f_[ix][iy] = f_l[iy];
-                    tab_f_[ix + 1][iy] = f_u[iy];
-                }
+                int i_l = index_sort_x[ix + 1];
+                int i_u = index_sort_x[ix];
+
+                index_sort_x[ix] = i_l;
+                index_sort_x[ix + 1] = i_u;
 
                 swapped = true;
                 break;
@@ -80,9 +71,6 @@ void InterCSpline2D::init(int nbin_in_x,
         if (!swapped) {
             sorted_x = true;
         }
-
-        delete [] f_l;
-        delete [] f_u;
     }
 
     xmin_ = tab_x_[0];
@@ -90,27 +78,20 @@ void InterCSpline2D::init(int nbin_in_x,
 
     bool sorted_y = false;
     while (!sorted_y) {
-        double *f_l = new double[nbin_x_ + 1];
-        double *f_u = new double[nbin_x_ + 1];
-
         bool swapped = false;
         for (int iy = 0; iy < nbin_y_; iy++) {
             if (tab_y_[iy] > tab_y_[iy + 1]) {
                 double y_l = tab_y_[iy + 1];
                 double y_u = tab_y_[iy];
 
-                for (int ix = 0; ix <= nbin_x_; ix++) {
-                    f_l[ix] = tab_f_[ix][iy + 1];
-                    f_u[ix] = tab_f_[ix][iy];
-                }
-
                 tab_y_[iy] = y_l;
                 tab_y_[iy + 1] = y_u;
 
-                for (int ix = 0; ix <= nbin_x_; ix++) {
-                    tab_f_[ix][iy] = f_l[ix];
-                    tab_f_[ix][iy + 1] = f_u[ix];
-                }
+                int i_l = index_sort_y[iy + 1];
+                int i_u = index_sort_y[iy];
+
+                index_sort_y[iy] = i_l;
+                index_sort_y[iy + 1] = i_u;
 
                 swapped = true;
                 break;
@@ -120,13 +101,23 @@ void InterCSpline2D::init(int nbin_in_x,
         if (!swapped) {
             sorted_y = true;
         }
-
-        delete [] f_l;
-        delete [] f_u;
     }
 
     ymin_ = tab_y_[0];
     ymax_ = tab_y_[nbin_y_];
+
+    for (int ix = 0; ix <= nbin_x_; ix++) {
+        int kx = index_sort_x[ix];
+        for (int iy = 0; iy <= nbin_y_; iy++) {
+            int ky = index_sort_y[iy];
+
+            tab_f_[ix][iy] = f_in[kx][ky];
+            tab_f_tr[iy][ix] = tab_f_[ix][iy];
+        }
+    }
+
+    delete [] index_sort_x;
+    delete [] index_sort_y;
 
     InterCSpline1D *list_csp_y_f =
         new InterCSpline1D [nbin_x_ + 1]();

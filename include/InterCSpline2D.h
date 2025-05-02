@@ -98,15 +98,15 @@ class InterCSpline2D {
      *   tab_y_[iy] < tab_y_[iy + 1]
      *
      * bc_df_dx : boundary condition for the first derivative in x
-     *   bc_df_dx[iy][0] = df/dx at x = xmin_ (= tab_x_[0]),
-     *                              y = tab_y_[iy]
-     *   bc_df_dx[iy][1] = df/dx at x = xmax_ (= tab_x_[nbin_x_]),
-     *                              y = tab_y_[iy]
+     *   bc_df_dx[iy][0] = df / dx at x = xmin_ (= tab_x_[0]),
+     *                                y = tab_y_[iy]
+     *   bc_df_dx[iy][1] = df / dx at x = xmax_ (= tab_x_[nbin_x_]),
+     *                                y = tab_y_[iy]
      * bc_df_dy : boundary condition for the first derivative in y
-     *   bc_df_dy[ix][0] = df/dy at x = tab_x_[ix],
-     *                              y = ymin_ (= tab_y_[0])
-     *   bc_df_dy[ix][1] = df/dy at x = tab_x_[ix],
-     *                              y = ymax_ (= tab_y_[nbin_y_])
+     *   bc_df_dy[ix][0] = df / dy at x = tab_x_[ix],
+     *                                y = ymin_ (= tab_y_[0])
+     *   bc_df_dy[ix][1] = df / dy at x = tab_x_[ix],
+     *                                y = ymax_ (= tab_y_[nbin_y_])
      * If a NULL pointer is given
      * for the value of bc_df_dx and/or bc_df_dy,
      * it performs a natural cubic spline.
