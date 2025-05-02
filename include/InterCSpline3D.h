@@ -120,26 +120,26 @@ class InterCSpline3D {
      *   tab_y_[iy] < tab_y_[iy + 1]
      *
      * bc_df_dz : boundary condition for the first derivative in z
-     *   bc_df_dz[ix][iy][0] = df/dz at z = zmin_ (= tab_z_[0]),
-     *                                  x = tab_x_[ix],
-     *                                  y = tab_y_[iy]
-     *   bc_df_dz[ix][iy][1] = df/dz at z = zmax_ (= tab_z_[nbin_z_]),
-     *                                  x = tab_x_[ix],
-     *                                  y = tab_y_[iy]
+     *   bc_df_dz[ix][iy][0] = df / dz at z = zmin_ (= tab_z_[0]),
+     *                                    x = tab_x_[ix],
+     *                                    y = tab_y_[iy]
+     *   bc_df_dz[ix][iy][1] = df / dz at z = zmax_ (= tab_z_[nbin_z_]),
+     *                                    x = tab_x_[ix],
+     *                                    y = tab_y_[iy]
      * bc_df_dx : boundary condition for the first derivative in x
-     *   bc_df_dx[iy][iz][0] = df/dx at z = tab_z_[iz],
-     *                                  x = xmin_ (= tab_x_[0]),
-     *                                  y = tab_y_[iy]
-     *   bc_df_dx[iy][iz][1] = df/dx at z = tab_z_[iz],
-     *                                  x = xmax_ (= tab_x_[nbin_x_]),
-     *                                  y = tab_y_[iy]
+     *   bc_df_dx[iy][iz][0] = df / dx at z = tab_z_[iz],
+     *                                    x = xmin_ (= tab_x_[0]),
+     *                                    y = tab_y_[iy]
+     *   bc_df_dx[iy][iz][1] = df / dx at z = tab_z_[iz],
+     *                                    x = xmax_ (= tab_x_[nbin_x_]),
+     *                                    y = tab_y_[iy]
      * bc_df_dy : boundary condition for the first derivative in y
-     *   bc_df_dy[iz][ix][0] = df/dy at z = tab_z_[iz],
-     *                                  x = tab_x_[ix],
-     *                                  y = ymin_ (= tab_y_[0])
-     *   bc_df_dy[iz][ix][1] = df/dy at z = tab_z_[iz],
-     *                                  x = tab_x_[ix],
-     *                                  y = ymax_ (= tab_y_[nbin_y_])
+     *   bc_df_dy[iz][ix][0] = df / dy at z = tab_z_[iz],
+     *                                    x = tab_x_[ix],
+     *                                    y = ymin_ (= tab_y_[0])
+     *   bc_df_dy[iz][ix][1] = df / dy at z = tab_z_[iz],
+     *                                    x = tab_x_[ix],
+     *                                    y = ymax_ (= tab_y_[nbin_y_])
      * If a NULL pointer is given
      * for the value of bc_df_dz, bc_df_dx and/or bc_df_dy,
      * it performs a natural cubic spline.
