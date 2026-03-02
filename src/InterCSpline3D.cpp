@@ -353,7 +353,7 @@ double InterCSpline3D::get_func(double z_in,
                                 double *ptr_d2f_dx_dx_out,
                                 double *ptr_d2f_dx_dy_out,
                                 double *ptr_d2f_dy_dy_out,
-                                double *ptr_d2f_dy_dz_out) {
+                                double *ptr_d2f_dy_dz_out) const {
     if (!initialized_) {
         if (ptr_df_dz_out != NULL) {
             *ptr_df_dz_out = 0.;
@@ -759,7 +759,7 @@ double InterCSpline3D::get_func(double z_in,
 
 double InterCSpline3D::get_func_lin(double z_in,
                                     double x_in,
-                                    double y_in) {
+                                    double y_in) const {
     if (!initialized_) {
         return 0.;
     }
@@ -803,7 +803,7 @@ double InterCSpline3D::get_func_lin(double z_in,
     return f_out;
 }
 
-int InterCSpline3D::get_index_z(double z_in) {
+int InterCSpline3D::get_index_z(double z_in) const {
     int iz = 0;
     if (z_in < zmin_) {
         iz = 0;
@@ -821,7 +821,7 @@ int InterCSpline3D::get_index_z(double z_in) {
     return iz;
 }
 
-int InterCSpline3D::get_index_x(double x_in) {
+int InterCSpline3D::get_index_x(double x_in) const {
     int ix = 0;
     if (x_in < xmin_) {
         ix = 0;
@@ -839,7 +839,7 @@ int InterCSpline3D::get_index_x(double x_in) {
     return ix;
 }
 
-int InterCSpline3D::get_index_y(double y_in) {
+int InterCSpline3D::get_index_y(double y_in) const {
     int iy = 0;
     if (y_in < ymin_) {
         iy = 0;

@@ -92,15 +92,15 @@ class InterCSpline1D {
      * at x = x_in */
     double get_func(double x_in,
                     double *ptr_df_dx_out = NULL,
-                    double *ptr_d2f_dx_dx_out = NULL);
+                    double *ptr_d2f_dx_dx_out = NULL) const;
 
     /* returns value of the function f
      * given by a linear interpolation */
-    double get_func_lin(double x_in);
+    double get_func_lin(double x_in) const;
 
     /* helper functions to find ix
      * such that tab_x_[ix] <= x_in < tab_x_[ix + 1] */
-    int get_index_x(double x_in);
+    int get_index_x(double x_in) const;
 };
 
 #endif

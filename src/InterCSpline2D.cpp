@@ -211,7 +211,7 @@ double InterCSpline2D::get_func(double x_in,
                                 double *ptr_df_dy_out,
                                 double *ptr_d2f_dx_dx_out,
                                 double *ptr_d2f_dx_dy_out,
-                                double *ptr_d2f_dy_dy_out) {
+                                double *ptr_d2f_dy_dy_out) const {
     if (!initialized_) {
         if (ptr_df_dx_out != NULL) {
             *ptr_df_dx_out = 0.;
@@ -399,7 +399,7 @@ double InterCSpline2D::get_func(double x_in,
 }
 
 double InterCSpline2D::get_func_lin(double x_in,
-                                    double y_in) {
+                                    double y_in) const {
     if (!initialized_) {
         return 0.;
     }
@@ -430,7 +430,7 @@ double InterCSpline2D::get_func_lin(double x_in,
     return f_out;
 }
 
-int InterCSpline2D::get_index_x(double x_in) {
+int InterCSpline2D::get_index_x(double x_in) const {
     int ix = 0;
     if (x_in < xmin_) {
         ix = 0;
@@ -448,7 +448,7 @@ int InterCSpline2D::get_index_x(double x_in) {
     return ix;
 }
 
-int InterCSpline2D::get_index_y(double y_in) {
+int InterCSpline2D::get_index_y(double y_in) const {
     int iy = 0;
     if (y_in < ymin_) {
         iy = 0;

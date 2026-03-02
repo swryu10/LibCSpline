@@ -198,21 +198,21 @@ class InterCSpline3D {
                     double *ptr_d2f_dx_dx_out = NULL,
                     double *ptr_d2f_dx_dy_out = NULL,
                     double *ptr_d2f_dy_dy_out = NULL,
-                    double *ptr_d2f_dy_dz_out = NULL);
+                    double *ptr_d2f_dy_dz_out = NULL) const;
 
     /* returns value of the function f
      * given by a linear interpolation */
     double get_func_lin(double z_in,
                         double x_in,
-                        double y_in);
+                        double y_in) const;
 
     /* helper functions to find iz, ix, iy
      * such that tab_z_[iz] <= z_in < tab_z_[iz + 1]
      *           tab_x_[ix] <= x_in < tab_x_[ix + 1] 
      *           tab_y_[iy] <= y_in < tab_y_[iy + 1] */
-    int get_index_z(double z_in);
-    int get_index_x(double x_in);
-    int get_index_y(double y_in);
+    int get_index_z(double z_in) const;
+    int get_index_x(double x_in) const;
+    int get_index_y(double y_in) const;
 
     static double ***new_array_func(int nbin_in_z,
                                     int nbin_in_x,

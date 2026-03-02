@@ -158,6 +158,16 @@ void InterCSpline1D::init(int nbin_in,
             0.5 * tab_d2f_dx_[1];
     }
 
+    delete [] coeff_a;
+    delete [] coeff_b;
+    delete [] coeff_c;
+    delete [] coeff_d;
+
+    delete [] coeff_ap;
+    delete [] coeff_bp;
+    delete [] coeff_cp;
+    delete [] coeff_dp;
+
     initialized_ = true;
 
     return;
@@ -165,7 +175,7 @@ void InterCSpline1D::init(int nbin_in,
 
 double InterCSpline1D::get_func(double x_in,
                                 double *ptr_df_dx_out,
-                                double *ptr_d2f_dx_dx_out) {
+                                double *ptr_d2f_dx_dx_out) const {
     if (!initialized_) {
         if (ptr_df_dx_out != NULL) {
             *ptr_df_dx_out = 0.;
@@ -219,10 +229,13 @@ double InterCSpline1D::get_func(double x_in,
             frac_d0f[1] * tab_d2f_dx_[ix + 1];
     }
 
+    delete [] frac_d0f;
+    delete [] frac_d2f;
+
     return f_out;
 }
 
-double InterCSpline1D::get_func_lin(double x_in) {
+double InterCSpline1D::get_func_lin(double x_in) const {
     if (!initialized_) {
         return 0.;
     }
@@ -244,7 +257,7 @@ double InterCSpline1D::get_func_lin(double x_in) {
     return f_out;
 }
 
-int InterCSpline1D::get_index_x(double x_in) {
+int InterCSpline1D::get_index_x(double x_in) const {
     int ix = 0;
     if (x_in < xmin_) {
         ix = 0;
